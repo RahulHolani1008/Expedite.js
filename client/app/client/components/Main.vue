@@ -4,11 +4,12 @@
       Fork and make your own! Do NOT use self-closing tags here on Codepen.
     </div>
 
-    <div class="q-ma-md">
-      <q-btn label="Notify" color="primary" @click="notify"></q-btn>
+    <div class="m-96">
+      <v-btn color="black" @click="notify">Notify</v-btn>
+      <p class="h1">h1. Bootstrap heading</p>
     </div>
 
-    <div class="q-ma-xl">Running Quasar v{{ version }}</div>
+    <div class="ml-5">Running Quasar v{{ version }}</div>
   </div>
 </template>
 
