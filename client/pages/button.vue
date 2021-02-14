@@ -6,14 +6,11 @@
     "
     :class="[
       classList,
-      !color.split('-')[1] ? 'bg-' + color + '-500' : 'bg-' + color,
-      !textColor.split('-')[1]
-        ? 'text-' + textColor + '-500'
-        : 'text-' + textColor,
-      !borderColor.split('-')[1]
-        ? 'border-' + borderColor + '-500'
-        : 'border-' + borderColor,
-      borderColor != '' && borderColor ? 'border-2' : '',
+      'transition-04',
+      'bg-' + color,
+      'text-' + textColor,
+      'border-' + borderColor,
+      borderColor ? 'border-2' : '',
       'rounded-' + borderRadius,
       !growSize
         ? ''
@@ -22,6 +19,7 @@
           } ease-in-out transform hover:scale-${
             typeof this.growSize == 'string' ? growSize : '110'
           }`,
+      'focus:ring focus:ring-' + ringColor,
     ]"
     class="align-text-bottom"
   >
@@ -33,34 +31,42 @@
   </button>
 </template>
 <script>
+import * as buttonDefault from "@/expedite/eButton.js";
+import * as colors from "@/expedite/colors.js";
 export default {
   props: {
     disabled: {
-      default: false,
+      default: buttonDefault.disabled,
     },
     classList: {
-      default: "px-5 py-2 select-none outline-none",
+      default: buttonDefault.classList,
     },
     color: {
-      default: "white",
-    },
-    textColor: {
-      default: "blue",
-    },
-    borderColor: {
-      default: "blue",
-    },
-    type: {
-      default: "submit",
-    },
-    borderRadius: {
-      default: "xl",
-    },
-    growSize: {
       default: false,
     },
+    textColor: {
+      default: false,
+    },
+    borderColor: {
+      default: false,
+    },
+    type: {
+      default: buttonDefault.type,
+    },
+    borderRadius: {
+      default: buttonDefault.borderRadius,
+    },
+    growSize: {
+      default: buttonDefault.growSize,
+    },
     transitionDuration: {
-      default: "500",
+      default: buttonDefault.transitionDuration,
+    },
+    dark: {
+      default: false,
+    },
+    ringColor: {
+      default: false,
     },
   },
   data() {
@@ -75,6 +81,22 @@ export default {
         return this.$store.state.getters.isFormValidationEnabled || false;
       },
     },
+  },
+  mounted() {
+    const darkMode = () => {
+      return this.dark
+        ? this.dark
+        : colors.isDark == "media"
+        ? window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? true
+          : false
+        : colors.isDark;
+    };
+    this.textColor = buttonDefault.textColor[darkMode() ? "dark" : "light"];
+    this.borderColor = buttonDefault.borderColor[darkMode() ? "dark" : "light"];
+    this.color = buttonDefault.color[darkMode() ? "dark" : "light"];
+    this.ringColor = buttonDefault.ringColor[darkMode() ? "dark" : "light"];
   },
 };
 </script>

@@ -14,16 +14,8 @@
           : dense
           ? 'label-dense'
           : 'label',
-        !labelColor.split('-')[1]
-          ? 'text-' + labelColor + '-500'
-          : 'text-' + labelColor,
-        !color.split('-')[1]
-          ? color == 'transparent'
-            ? 'bg-white'
-            : 'bg-' + color + '-500'
-          : color.test(/transparent\-([1-9]|[1-9][0-9]|[1-9][0-9][0-9]|1000)/g)
-          ? 'bg-white'
-          : 'bg-' + color,
+        'text-' + labelColor,
+        color == 'transparent' ? 'bg-white' : 'bg-' + color + '-500',
       ]"
       >{{ label }}</span
     >
@@ -50,24 +42,20 @@
       :placeholder="placeholder"
       :class="[
         outlined
-          ? `ring ring-${showValidation ? 'red' : primary}-300`
+          ? `ring ring-${showValidation ? 'red' : ringColor}-300`
           : solid
-          ? `focus:outline-none focus:ring-${primary}-300`
+          ? `focus:outline-none focus:ring-${ringColor}-300`
           : underlined
-          ? !borderColor.split('-')[1]
-            ? 'border-' + borderColor + '-500'
-            : 'border-' + borderColor
+          ? 'border-' + borderColor
           : `${showValidation ? '' : 'focus:'}ring ${
               showValidation ? '' : 'focus:'
-            }ring-${showValidation ? 'red' : primary}-300`,
+            }ring-${showValidation ? 'red' : borderColor}-300`,
         shadow ? 'shadow-' + shadow : '',
         dense ? 'h-10 p-2' : 'h-16 p-4',
         hasSlot('icon-right') ? (dense ? 'pr-7' : 'pr-10') : '',
         hasSlot('icon-left') ? (dense ? 'pl-7' : 'pl-10') : '',
-        !textColor.split('-')[1]
-          ? 'text-' + textColor + '-500'
-          : 'text-' + textColor,
-        !color.split('-')[1] ? 'bg-' + color + '-500' : 'bg-' + color,
+        'text-' + textColor,
+        'bg-' + color,
         classList,
         'rounded-' + borderRadius,
       ]"
@@ -82,58 +70,60 @@
   </div>
 </template>
 <script>
+import * as textfieldDefault from "@/expedite/eTextField.js";
+import * as colors from "@/expedite/colors.js";
 export default {
   props: {
     outlined: {
-      default: false,
+      default: textfieldDefault.outlined,
     },
     solid: {
-      default: false,
+      default: textfieldDefault.solid,
     },
     underlined: {
-      default: false,
+      default: textfieldDefault.underlined,
     },
     dense: {
-      default: false,
+      default: textfieldDefault.dense,
     },
     value: {
-      default: "",
+      default: textfieldDefault.value,
     },
-    primary: {
-      default: "indigo",
+    ringColor: {
+      default: false,
     },
     label: {
-      default: false,
+      default: textfieldDefault.label,
     },
     placeholder: {
-      default: false,
+      default: textfieldDefault.placeholder,
     },
     shadow: {
-      default: false,
+      default: textfieldDefault.shadow,
     },
     color: {
-      default: "transparent",
+      default: false,
     },
     textColor: {
-      default: "black",
+      default: false,
     },
     labelColor: {
-      default: "black",
+      default: false,
     },
     borderRadius: {
-      default: "xl",
+      default: textfieldDefault.borderRadius,
     },
     borderColor: {
-      default: "transparent",
+      default: false,
     },
     realTimeError: {
-      default: false,
+      default: textfieldDefault.realTimeError,
     },
     error: {
-      default: false,
+      default: textfieldDefault.error,
     },
     classList: {
-      default: "",
+      default: textfieldDefault.classList,
     },
   },
   data() {
@@ -161,6 +151,23 @@ export default {
         (this.isFocused && this.realTimeError && this.error)
       );
     },
+  },
+  mounted() {
+    const darkMode = () => {
+      return colors.isDark == "media"
+        ? window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches
+          ? true
+          : false
+        : colors.isDark;
+    };
+    this.textColor = textfieldDefault.textColor[darkMode() ? "dark" : "light"];
+    this.labelColor =
+      textfieldDefault.labelColor[darkMode() ? "dark" : "light"];
+    this.borderColor =
+      textfieldDefault.borderColor[darkMode() ? "dark" : "light"];
+    this.color = textfieldDefault.color[darkMode() ? "dark" : "light"];
+    this.ringColor = textfieldDefault.ringColor[darkMode() ? "dark" : "light"];
   },
   methods: {
     hasSlot(name = "default") {
