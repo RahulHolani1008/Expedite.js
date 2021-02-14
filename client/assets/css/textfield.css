@@ -1,0 +1,25 @@
+.label-focused {
+  top: -12px !important;
+  left: 10px !important;
+  @apply transition-04;
+}
+.textfield .label-icon-dense {
+  left: 1.5rem; 
+  top: 0.5rem;
+  @apply transition-04;
+}
+.textfield .label-icon {
+  left: 2rem; 
+  top: 1.2rem;
+  @apply transition-04;
+}
+.textfield .label-dense {
+  left: 0.25rem; 
+  top: 0.5rem;
+  @apply transition-04;
+}
+.textfield .label {
+  left: 0.5rem; 
+  top: 1.2rem;
+  @apply transition-04;
+}

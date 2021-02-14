@@ -1,0 +1,9 @@
+@import './button.css';
+@import './textfield.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.transition-04 {
+    transition: all 0.4s ease-in-out;
+}

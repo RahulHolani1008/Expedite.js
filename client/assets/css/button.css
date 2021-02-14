@@ -1,0 +1,14 @@
+.outline-none{
+    outline: 0px solid transparent !important;
+    outline-color: transparent !important;
+    outline-style: solid !important;
+    outline-width: 0px !important;
+}
+
+.textfield:focus-wthin .label {
+  top: -12px !important;
+  left: 20px !important;
+  background: white;
+  padding-left: 5px;
+  padding-right: 5px;
+}
